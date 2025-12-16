@@ -4,7 +4,7 @@ import { UseDataContext } from '../context';
 
 export const CreateTaskForm = () => {
 	const [textValue, setTextValue] = useState('');
-	const { createTodo, isLoading } = use(UseDataContext);
+	const { createTodo } = use(UseDataContext);
 
 	const onSubmit = (event) => {
 		event.preventDefault();
@@ -27,7 +27,6 @@ export const CreateTaskForm = () => {
 				className={styles.createButton}
 				onClick={onSubmit}
 				type="submit"
-				disabled={isLoading}
 			>
 				Создать
 			</button>

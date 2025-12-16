@@ -1,29 +1,10 @@
-import { useState, useEffect, use } from 'react';
+import { use } from 'react';
 import styles from '../App.module.css';
 import { UseDataContext } from '../context';
 import { Todo } from './Todo';
 
-const debounce = (func, delay) => {
-	let timeout;
-	return (...args) => {
-		clearTimeout(timeout);
-		timeout = setTimeout(() => func.apply(this, args), delay);
-	};
-};
-
 export const TodosList = () => {
-	const [order, setOrder] = useState('');
-	const handleOrder = () => setOrder((prev) => (prev === '' ? 'asc' : ''));
-
-	const [searchText, setSearchText] = useState('');
-	const delayedSetSearchText = debounce((newValue) => setSearchText(newValue), 300);
-	const searchOnChange = ({ target }) => delayedSetSearchText(target.value);
-
-	const { todos, isLoading, fetchData } = use(UseDataContext);
-
-	useEffect(() => {
-		fetchData(order, searchText);
-	}, [order, searchText]);
+	const { todos, handleOrder, searchOnChange } = use(UseDataContext);
 
 	return (
 		<div className={styles.todosContainer}>
@@ -47,15 +28,11 @@ export const TodosList = () => {
 				</button>
 			</h1>
 
-			{isLoading ? (
-				<div className={styles.loader}></div>
-			) : (
-				<ul className={styles.todoList}>
-					{todos.map(({ id, title }) => (
-						<Todo key={id} id={id} title={title} />
-					))}
-				</ul>
-			)}
+			<ul className={styles.todoList}>
+				{todos.map(({ id, title }) => (
+					<Todo key={id} id={id} title={title} />
+				))}
+			</ul>
 		</div>
 	);
 };

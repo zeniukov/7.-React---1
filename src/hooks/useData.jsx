@@ -1,10 +1,26 @@
-import { useState } from 'react';
+import styles from '../App.module.css';
+import { useEffect, useState } from 'react';
 import { UseDataContext } from '../context';
+
+const debounce = (func, delay) => {
+	let timeout;
+	return (...args) => {
+		clearTimeout(timeout);
+		timeout = setTimeout(() => func.apply(this, args), delay);
+	};
+};
 
 export const UseDataProvider = ({ children }) => {
 	const [todos, setTodos] = useState([]);
 	const [isLoading, setIsLoading] = useState(false);
 	const [error, setError] = useState(null);
+
+	const [order, setOrder] = useState('');
+	const handleOrder = () => setOrder((prev) => (prev === '' ? 'asc' : ''));
+
+	const [searchText, setSearchText] = useState('');
+	const delayedSetSearchText = debounce((newValue) => setSearchText(newValue), 300);
+	const searchOnChange = ({ target }) => delayedSetSearchText(target.value);
 
 	const fetchData = async (order, searchText) => {
 		setIsLoading(true);
@@ -83,10 +99,19 @@ export const UseDataProvider = ({ children }) => {
 		}
 	};
 
+	useEffect(() => {
+		fetchData(order, searchText);
+	}, [order, searchText]);
+
+	if (isLoading) return <div className={styles.loader}></div>;
+
+	if (error) return <h1>{error}</h1>;
+
 	return (
 		<UseDataContext
 			value={{
-				fetchData,
+				handleOrder,
+				searchOnChange,
 				todos,
 				isLoading,
 				error,
