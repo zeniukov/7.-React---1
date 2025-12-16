@@ -20,7 +20,9 @@ export const UseDataProvider = ({ children }) => {
 
 	const [searchText, setSearchText] = useState('');
 	const delayedSetSearchText = debounce((newValue) => setSearchText(newValue), 500);
-	const searchOnChange = ({ target }) => delayedSetSearchText(target.value);
+	const searchOnChange = ({ target }) => {
+		delayedSetSearchText(target.value);
+	}
 
 	const fetchData = async (order, searchText) => {
 		setIsLoading(true);
