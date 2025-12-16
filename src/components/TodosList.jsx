@@ -4,7 +4,7 @@ import { UseDataContext } from '../context';
 import { Todo } from './Todo';
 
 export const TodosList = () => {
-	const { todos, handleOrder, searchOnChange } = use(UseDataContext);
+	const { todos, searchText, handleOrder, searchOnChange } = use(UseDataContext);
 
 	return (
 		<div className={styles.todosContainer}>
@@ -16,6 +16,7 @@ export const TodosList = () => {
 						name="text"
 						className={styles.filterBlockInput}
 						placeholder="Начните ввод"
+						value={searchText}
 						onChange={searchOnChange}
 					/>
 				</label>

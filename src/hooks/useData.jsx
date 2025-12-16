@@ -19,7 +19,7 @@ export const UseDataProvider = ({ children }) => {
 	const handleOrder = () => setOrder((prev) => (prev === '' ? 'asc' : ''));
 
 	const [searchText, setSearchText] = useState('');
-	const delayedSetSearchText = debounce((newValue) => setSearchText(newValue), 300);
+	const delayedSetSearchText = debounce((newValue) => setSearchText(newValue), 500);
 	const searchOnChange = ({ target }) => delayedSetSearchText(target.value);
 
 	const fetchData = async (order, searchText) => {
@@ -112,6 +112,7 @@ export const UseDataProvider = ({ children }) => {
 			value={{
 				handleOrder,
 				searchOnChange,
+				searchText,
 				todos,
 				isLoading,
 				error,
